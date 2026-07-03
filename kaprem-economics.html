@@ -6,308 +6,284 @@
 <title>КапРем · Экономика автоматизации ИД и ППР</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;800;900&family=Golos+Text:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Spline+Sans+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
 :root{
-  --page:#0a1020;--bg:#0f1830;--bg2:#141f3c;--bg3:#1b2748;--bg4:#243358;
-  --b:#243358;--b2:#324372;--b3:#4a5d94;
-  --t:#eaf1fb;--t2:#9fb2d4;--t3:#6b7ca8;
-  --cyan:#22d3ee;--blue:#3b82f6;--teal:#2dd4bf;--green:#34d399;
-  --purple:#a78bfa;--amber:#fbbf24;--orange:#fb923c;--red:#f87171;
+  --paper:#f4f2ec;--paper2:#fbfaf6;--ink:#1c2530;--ink2:#54606e;--ink3:#8b95a1;
+  --line:#c9cdc3;--line2:#a8ada2;
+  --blue:#1f5fd6;--blue-soft:#e4ecfb;
+  --red:#d5322f;--red-soft:#fbe6e5;
+  --amber:#c17d17;--amber-soft:#f6ecd8;
+  --green:#2f8f5b;--green-soft:#e0f0e7;
+  --purple:#6b4fd6;--purple-soft:#e8e3f9;
 }
-html,body{background:var(--page);color:var(--t);font-family:'Golos Text',sans-serif;line-height:1.5}
-body{max-width:1200px;margin:0 auto;padding:0 22px 80px}
-.atm{position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:radial-gradient(circle at 15% 8%,rgba(34,211,238,.06),transparent 42%),
-    radial-gradient(circle at 85% 92%,rgba(167,139,250,.06),transparent 44%)}
-
-/* HERO */
-.hero{padding:60px 0 34px;border-bottom:1px solid var(--b)}
-.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.16em;color:var(--t2);text-transform:uppercase;display:flex;align-items:center;gap:9px}
-.eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
-h1{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(30px,5vw,52px);line-height:1.02;margin:16px 0 12px;letter-spacing:-.01em}
-.grad{background:linear-gradient(120deg,var(--cyan),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.grad-a{background:linear-gradient(120deg,var(--amber),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.grad-g{background:linear-gradient(120deg,var(--green),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.grad-p{background:linear-gradient(120deg,var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero-sub{font-size:16px;color:var(--t2);max-width:640px}
-.hero-big{margin-top:30px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
-.hero-big .hb-num{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(44px,8vw,86px);line-height:1}
-.hero-big .hb-lbl{font-size:15px;color:var(--t2)}
-.hero-big .hb-lbl b{color:var(--t);font-weight:700}
-
-/* секции */
-section{padding:44px 0;border-bottom:1px solid var(--b)}
-.sec-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;margin-bottom:8px}
-h2{font-family:'Unbounded',sans-serif;font-weight:800;font-size:clamp(20px,2.6vw,28px);margin-bottom:6px}
-.sec-lead{color:var(--t2);font-size:14px;max-width:680px;margin-bottom:26px}
-
-/* распределение систем */
-.dist{display:flex;flex-direction:column;gap:12px;margin-bottom:8px}
-.dist-row{display:grid;grid-template-columns:130px 1fr 150px;gap:18px;align-items:center}
-.dist-label{font-weight:700;font-size:14px}
-.dist-label span{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);font-weight:400}
-.dist-track{height:34px;border-radius:9px;background:var(--bg2);overflow:hidden;position:relative;border:1px solid var(--b)}
-.dist-fill{height:100%;border-radius:9px;display:flex;align-items:center;padding-left:14px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#08111f;transition:width 1s cubic-bezier(.2,.7,.2,1);white-space:nowrap;min-width:60px}
-.dist-val{text-align:right;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t2)}
-.dist-val b{font-family:'Unbounded',sans-serif;color:var(--t);font-size:17px;display:block}
-
-/* KPI-плитки */
-.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
-.tile{background:var(--bg);border:1px solid var(--b);border-radius:16px;padding:20px;border-top:3px solid var(--b3)}
-.tile.c1{border-top-color:var(--cyan)}.tile.c2{border-top-color:var(--amber)}
-.tile.c3{border-top-color:var(--green)}.tile.c4{border-top-color:var(--purple)}
-.tile .t-l{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t2);text-transform:uppercase}
-.tile .t-v{font-family:'Unbounded',sans-serif;font-weight:900;font-size:clamp(22px,2.6vw,30px);margin-top:10px;line-height:1}
-.tile .t-s{font-size:12px;color:var(--t2);margin-top:8px}
-
-/* выручка бар */
-.revbar{display:flex;height:64px;border-radius:14px;overflow:hidden;border:1px solid var(--b);margin-top:8px}
-.revbar-seg{display:flex;flex-direction:column;justify-content:center;padding:0 22px;color:#08111f;font-weight:700}
-.revbar-seg .rs-l{font-family:'JetBrains Mono',monospace;font-size:11px;opacity:.8}
-.revbar-seg .rs-v{font-family:'Unbounded',sans-serif;font-size:19px;font-weight:900}
-
-/* калькулятор железа */
-.hw{display:grid;grid-template-columns:320px 1fr;gap:28px;align-items:start;margin-top:10px}
-.hw-controls{background:var(--bg);border:1px solid var(--b);border-radius:18px;padding:22px}
-.ctl{margin-bottom:22px}
+html,body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5}
+body{position:relative;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line) .5px,transparent .5px),linear-gradient(90deg,var(--line) .5px,transparent .5px),
+    linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);
+  background-size:8px 8px,8px 8px,80px 80px,80px 80px}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 24px 90px}
+.frame{border:2px solid var(--ink);margin-top:26px;background:var(--paper2);box-shadow:0 1px 0 var(--ink),8px 8px 0 rgba(28,37,48,.06)}
+.frame-inner{border:1px solid var(--line2);margin:7px}
+.titleblock{display:grid;grid-template-columns:1fr auto;border-bottom:1.5px solid var(--ink)}
+.tb-left{padding:22px 26px}
+.tb-eyebrow{font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:9px}
+.tb-eyebrow::before{content:"";width:22px;height:2px;background:var(--blue)}
+h1{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(26px,4.4vw,44px);line-height:1.02;letter-spacing:-.015em;margin:12px 0 10px;max-width:18ch}
+h1 .u{color:var(--blue);position:relative}
+h1 .u::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:6px;background:var(--blue-soft);z-index:-1}
+.tb-sub{font-size:15px;color:var(--ink2);max-width:56ch}
+.tb-right{border-left:1.5px solid var(--ink);display:grid;grid-template-rows:repeat(3,1fr);min-width:200px}
+.tb-cell{padding:11px 16px;border-bottom:1px solid var(--line2);font-family:'Spline Sans Mono',monospace}
+.tb-cell:last-child{border-bottom:none}
+.tb-cell .c-l{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3)}
+.tb-cell .c-v{font-size:14px;font-weight:700;color:var(--ink);margin-top:3px}
+.tb-cell .c-v.big{font-family:'Archivo',sans-serif;font-size:17px;color:var(--amber)}
+.section{padding:34px 26px;border-bottom:1.5px solid var(--ink)}
+.section:last-child{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(18px,2.4vw,24px)}
+h2 .hl{color:var(--amber)}
+h2 .hlb{color:var(--blue)}
+.sec-tag{font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;color:var(--red);border:1px solid var(--red);padding:3px 9px;border-radius:2px;text-transform:uppercase}
+.sec-lead{font-size:13px;color:var(--ink2);max-width:72ch;margin-bottom:22px}
+.dist{display:flex;flex-direction:column;gap:11px}
+.dist-row{display:grid;grid-template-columns:150px 1fr 120px;gap:16px;align-items:center}
+.dist-label{font-family:'Spline Sans Mono',monospace;font-size:12px;font-weight:600}
+.dist-label span{display:block;font-size:10px;color:var(--ink3);font-weight:400;margin-top:2px}
+.dist-track{height:32px;border:1.4px solid var(--ink);background:#fff;overflow:hidden;position:relative}
+.dist-fill{height:100%;display:flex;align-items:center;padding-left:12px;font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:700;color:#fff;transition:width 1s cubic-bezier(.2,.7,.2,1);white-space:nowrap;min-width:56px}
+.dist-val{text-align:right;font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink2)}
+.dist-val b{font-family:'Archivo',sans-serif;color:var(--ink);font-size:17px;display:block}
+.revbar{display:flex;height:60px;border:1.5px solid var(--ink);overflow:hidden}
+.revbar-seg{display:flex;flex-direction:column;justify-content:center;padding:0 20px;color:#fff}
+.revbar-seg .rs-l{font-family:'Spline Sans Mono',monospace;font-size:11px;opacity:.9}
+.revbar-seg .rs-v{font-family:'Archivo',sans-serif;font-size:19px;font-weight:900}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.tile{border:1.4px solid var(--ink);background:var(--paper2);padding:16px 15px;position:relative}
+.tile::before{content:attr(data-n);position:absolute;top:-11px;left:12px;color:#fff;font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px}
+.tile.c1::before{background:var(--blue)}.tile.c2::before{background:var(--amber)}
+.tile.c3::before{background:var(--green)}.tile.c4::before{background:var(--purple)}
+.tile .t-l{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink3);text-transform:uppercase}
+.tile .t-v{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(20px,2.4vw,26px);margin-top:8px;line-height:1}
+.tile.c1 .t-v{color:var(--blue)}.tile.c2 .t-v{color:var(--amber)}.tile.c3 .t-v{color:var(--green)}.tile.c4 .t-v{color:var(--purple)}
+.tile .t-s{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink2);margin-top:8px}
+.hw{display:grid;grid-template-columns:320px 1fr;gap:24px;align-items:start}
+@media(max-width:900px){.hw{grid-template-columns:1fr}}
+.hw-controls{border:1.5px solid var(--ink);background:var(--paper2);padding:20px}
+.hw-ctl-title{font-family:'Spline Sans Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);border-bottom:1px solid var(--line2);padding-bottom:10px;margin-bottom:16px}
+.ctl{margin-bottom:20px}
 .ctl:last-child{margin-bottom:0}
-.ctl-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.ctl-label{font-weight:700;font-size:13px}
-.ctl-label span{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3);font-weight:400}
-.ctl-val{font-family:'Unbounded',sans-serif;font-weight:900;font-size:20px;color:var(--cyan)}
-.ctl-val .u{font-size:11px;color:var(--t2);font-weight:600;font-family:'Golos Text',sans-serif}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:5px;background:var(--bg4);outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));cursor:pointer;box-shadow:0 3px 10px rgba(34,211,238,.4);border:2px solid #0a1020}
-input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));cursor:pointer;border:2px solid #0a1020}
-.ctl-ticks{display:flex;justify-content:space-between;margin-top:6px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t3)}
-.assumption{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--amber);background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2);border-radius:9px;padding:10px 12px;margin-top:6px;line-height:1.5}
-
-/* карточки железа */
-.hw-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.hwc{background:var(--bg);border:1px solid var(--b);border-radius:18px;padding:22px;position:relative;overflow:hidden}
-.hwc.hyperpc{border-top:3px solid var(--green)}
-.hwc.mac{border-top:3px solid var(--purple)}
-.hwc-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:8px;display:inline-block;margin-bottom:12px}
-.hwc.hyperpc .hwc-badge{background:rgba(52,211,153,.12);color:var(--green)}
-.hwc.mac .hwc-badge{background:rgba(167,139,250,.12);color:var(--purple)}
-.hwc-name{font-family:'Unbounded',sans-serif;font-weight:800;font-size:17px;margin-bottom:3px}
-.hwc-spec{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);line-height:1.5;margin-bottom:16px;min-height:44px}
-.hwc-price{font-family:'Unbounded',sans-serif;font-weight:900;font-size:26px;margin-bottom:18px}
+.ctl-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px}
+.ctl-label{font-size:12px;font-weight:600}
+.ctl-label span{display:block;font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--ink3);font-weight:400}
+.ctl-val{font-family:'Archivo',sans-serif;font-weight:900;font-size:19px;color:var(--blue)}
+.ctl-val.p{color:var(--purple)}
+.ctl-val.g{color:var(--green)}
+.ctl-val .u{font-size:10px;color:var(--ink2);font-weight:600;font-family:'Inter',sans-serif}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:var(--line);outline:none;cursor:pointer;border:1px solid var(--line2)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:0;background:var(--blue);cursor:pointer;border:2px solid var(--ink);box-shadow:2px 2px 0 rgba(28,37,48,.15)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:0;background:var(--blue);cursor:pointer;border:2px solid var(--ink)}
+.ctl-ticks{display:flex;justify-content:space-between;margin-top:6px;font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--ink3)}
+.assumption{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--red);background:var(--red-soft);border:1px solid var(--red);padding:10px 12px;margin-top:6px;line-height:1.5}
+.hw-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.hw-cards{grid-template-columns:1fr}}
+.hwc{border:1.5px solid var(--ink);background:var(--paper2)}
+.hwc-head{padding:12px 16px;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.hwc.hyperpc .hwc-head{background:var(--green)}
+.hwc.mac .hwc-head{background:var(--purple)}
+.hwc-head .hh-badge{font-family:'Spline Sans Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.hwc-head .hh-name{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px}
+.hwc-body{padding:16px}
+.hwc-spec{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink2);line-height:1.6;margin-bottom:14px;padding-bottom:14px;border-bottom:1px dotted var(--line2);min-height:52px}
+.hwc-price{font-family:'Archivo',sans-serif;font-weight:900;font-size:24px;margin-bottom:16px}
 .hwc.hyperpc .hwc-price{color:var(--green)}.hwc.mac .hwc-price{color:var(--purple)}
-.hwc-metrics{display:flex;flex-direction:column;gap:12px}
-.hwc-metric{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:11px;border-bottom:1px solid var(--b)}
-.hwc-metric:last-child{border-bottom:none;padding-bottom:0}
-.hwc-metric .m-l{font-size:12px;color:var(--t2)}
-.hwc-metric .m-v{font-family:'Unbounded',sans-serif;font-weight:800;font-size:18px}
-.payback{margin-top:16px;padding:13px 16px;border-radius:12px;background:var(--bg2);border:1px solid var(--b);text-align:center}
-.payback .p-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--t2);text-transform:uppercase}
-.payback .p-v{font-family:'Unbounded',sans-serif;font-weight:900;font-size:24px;margin-top:5px;color:var(--amber)}
-
-/* сравнение-вывод */
-.verdict{background:linear-gradient(135deg,var(--bg2),var(--bg));border:1px solid var(--b2);border-radius:18px;padding:26px;margin-top:24px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
-.verdict-ic{font-size:44px;flex-shrink:0}
+.hwc-metrics{display:flex;flex-direction:column;gap:0}
+.hwc-metric{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px dotted var(--line2)}
+.hwc-metric:last-child{border-bottom:none}
+.hwc-metric .m-l{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink2)}
+.hwc-metric .m-v{font-family:'Archivo',sans-serif;font-weight:800;font-size:17px}
+.payback{margin-top:14px;padding:11px 14px;background:var(--amber-soft);border:1.4px solid var(--amber);text-align:center}
+.payback .p-l{font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em}
+.payback .p-v{font-family:'Archivo',sans-serif;font-weight:900;font-size:22px;margin-top:4px;color:var(--amber)}
+.verdict{border:1.4px solid var(--ink);background:var(--blue-soft);padding:22px;margin-top:22px;display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.verdict-ic{font-size:34px;flex-shrink:0;line-height:1}
 .verdict-txt{flex:1;min-width:240px}
-.verdict-txt h3{font-family:'Unbounded',sans-serif;font-weight:800;font-size:18px;margin-bottom:8px}
-.verdict-txt p{font-size:14px;color:var(--t2);line-height:1.6}
-.verdict-txt b{color:var(--t)}
-
-.note{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3);margin-top:26px;line-height:1.7;padding:16px;background:var(--bg);border:1px solid var(--b);border-radius:12px}
-.note b{color:var(--t2)}
-
-@media(max-width:900px){
-  .tiles{grid-template-columns:1fr 1fr}
-  .hw{grid-template-columns:1fr}
-  .hw-cards{grid-template-columns:1fr}
-  .revbar{flex-direction:column;height:auto}
-  .revbar-seg{padding:16px 22px}
-  .dist-row{grid-template-columns:100px 1fr;grid-template-areas:"label bar" "val val"}
-  .dist-val{grid-area:val;text-align:left}
-}
-@media(prefers-reduced-motion:reduce){*{transition-duration:.01s!important}}
-:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.verdict-txt h3{font-family:'Archivo',sans-serif;font-weight:800;font-size:16px;margin-bottom:7px}
+.verdict-txt p{font-size:13px;color:var(--ink2);line-height:1.6}
+.verdict-txt b{color:var(--ink)}
+.disclaimer{margin-top:22px;border:1.4px dashed var(--line2);background:var(--paper2);padding:15px 17px;font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink2);line-height:1.7}
+.disclaimer b{color:var(--ink)}.disclaimer .warn{color:var(--red);font-weight:700}
+.signrow{display:grid;grid-template-columns:repeat(4,1fr);border-top:1.5px solid var(--ink)}
+.sign-cell{padding:12px 15px;border-right:1px solid var(--line2);font-family:'Spline Sans Mono',monospace}
+.sign-cell:last-child{border-right:none}
+.sign-cell .s-l{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
+.sign-cell .s-v{font-size:13px;font-weight:700;margin-top:4px}
+@media(max-width:620px){.signrow{grid-template-columns:1fr 1fr}.sign-cell:nth-child(2){border-right:none}
+  .dist-row{grid-template-columns:110px 1fr;grid-template-areas:"label bar" "val val"}.dist-val{grid-area:val;text-align:left}
+  .tiles{grid-template-columns:1fr 1fr}.revbar{flex-direction:column;height:auto}}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="atm"></div>
-
-<div class="hero">
-  <div class="eyebrow"><span class="dot"></span> КапРем · Экономика автоматизации · Буран</div>
-  <h1>Сколько приносит <span class="grad">автоматическая генерация</span> ИД и ППР</h1>
-  <div class="hero-sub">Портфель 2000 домов. ППР и ИД формируются автоматически на каждую инженерную систему. Ниже — выручка портфеля и расчёт железа, которое её обеспечивает.</div>
-  <div class="hero-big">
-    <div class="hb-num grad-a" id="heroRev">134,4 млн ₽</div>
-    <div class="hb-lbl">суммарная выручка портфеля<br><b id="heroSys">11 200 систем</b> × (2 000 ₽ ППР + 10 000 ₽ ИД)</div>
-  </div>
+<div class="wrap">
+  <div class="frame"><div class="frame-inner">
+    <div class="titleblock">
+      <div class="tb-left">
+        <div class="tb-eyebrow">КапРем · экономика · Буран</div>
+        <h1>Экономика <span class="u">автоматизации ИД и ППР</span></h1>
+        <div class="tb-sub">Портфель 2000 домов. ППР и ИД формируются автоматически на каждую инженерную систему. Ниже — выручка портфеля и расчёт железа, которое её обеспечивает.</div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-cell"><div class="c-l">Выручка портфеля</div><div class="c-v big">134,4 млн ₽</div></div>
+        <div class="tb-cell"><div class="c-l">Систем всего</div><div class="c-v">11 200</div></div>
+        <div class="tb-cell"><div class="c-l">Цена ППР / ИД</div><div class="c-v">2 000 / 10 000 ₽</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-head"><h2>2000 домов → <span class="hlb">11 200 систем</span></h2></div>
+      <div class="sec-lead">Дома различаются по числу инженерных систем. И ППР, и ИД делаются на каждую систему — поэтому считаем от общего числа систем, а не домов.</div>
+      <div class="dist" id="dist"></div>
+    </div>
+    <div class="section">
+      <div class="sec-head"><h2>Из чего складываются <span class="hl">134,4 млн ₽</span></h2></div>
+      <div class="sec-lead">Разово по всему портфелю из 2000 домов. ИД — основной драйвер: цена в 5 раз выше ППР.</div>
+      <div class="revbar" id="revbar"></div>
+      <div class="tiles">
+        <div class="tile c1" data-n="SUM"><div class="t-l">Всего систем</div><div class="t-v">11 200</div><div class="t-s">в среднем 5,6 на дом</div></div>
+        <div class="tile c2" data-n="ППР"><div class="t-l">Выручка ППР</div><div class="t-v">22,4 млн ₽</div><div class="t-s">11 200 × 2 000 ₽</div></div>
+        <div class="tile c3" data-n="ИД"><div class="t-l">Выручка ИД</div><div class="t-v">112 млн ₽</div><div class="t-s">11 200 × 10 000 ₽</div></div>
+        <div class="tile c4" data-n="AVG"><div class="t-l">В среднем с дома</div><div class="t-v">67,2 тыс ₽</div><div class="t-s">ППР + ИД по системам</div></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="sec-head"><h2>Какое <span class="hlb">железо</span> это потянет</h2><div class="sec-tag">допущения · ползунки</div></div>
+      <div class="sec-lead">Скорость генерации зависит от вашего пайплайна (модель, длина документа). Задайте реальные значения ползунками — расчёт пересчитается. Значения по умолчанию — инженерная оценка, не факт.</div>
+      <div class="hw">
+        <div class="hw-controls">
+          <div class="hw-ctl-title">Параметры расчёта</div>
+          <div class="ctl">
+            <div class="ctl-top"><div class="ctl-label">HYPERPC 7R MAX<span>минут на 1 систему (ППР+ИД)</span></div><div class="ctl-val"><span id="vH">6</span> <span class="u">мин</span></div></div>
+            <input type="range" id="slH" min="1" max="30" value="6">
+            <div class="ctl-ticks"><span>1</span><span>15</span><span>30</span></div>
+          </div>
+          <div class="ctl">
+            <div class="ctl-top"><div class="ctl-label">Mac Studio M3 Ultra<span>минут на 1 систему (ППР+ИД)</span></div><div class="ctl-val p"><span id="vM">12</span> <span class="u">мин</span></div></div>
+            <input type="range" id="slM" min="1" max="40" value="12">
+            <div class="ctl-ticks"><span>1</span><span>20</span><span>40</span></div>
+          </div>
+          <div class="ctl">
+            <div class="ctl-top"><div class="ctl-label">Рабочих часов в сутки<span>смена генерации</span></div><div class="ctl-val g"><span id="vHrs">8</span> <span class="u">ч</span></div></div>
+            <input type="range" id="slHrs" min="4" max="24" value="8">
+            <div class="ctl-ticks"><span>4</span><span>12</span><span>24</span></div>
+          </div>
+          <div class="assumption">! Скорость — допущение. Реальную цифру знает ваш пайплайн: замерьте время генерации одного комплекта ППР+ИД и впишите ползунком.</div>
+        </div>
+        <div class="hw-cards">
+          <div class="hwc hyperpc">
+            <div class="hwc-head"><span class="hh-name">HYPERPC 7R MAX</span><span class="hh-badge">Сервер · GPU</span></div>
+            <div class="hwc-body">
+              <div class="hwc-spec">RTX PRO 6000 Blackwell · 96 ГБ VRAM · 24 064 CUDA · Threadripper PRO 7975WX · 512 ГБ ECC</div>
+              <div class="hwc-price">6 303 300 ₽</div>
+              <div class="hwc-metrics">
+                <div class="hwc-metric"><span class="m-l">Систем в день</span><span class="m-v" style="color:var(--green)" id="hDay">80</span></div>
+                <div class="hwc-metric"><span class="m-l">Систем в месяц</span><span class="m-v" style="color:var(--green)" id="hMonth">1 760</span></div>
+                <div class="hwc-metric"><span class="m-l">Весь портфель за</span><span class="m-v" id="hAll">6,4 мес</span></div>
+                <div class="hwc-metric"><span class="m-l">Выручка / месяц</span><span class="m-v" style="color:var(--amber)" id="hRev">21,1 млн ₽</span></div>
+              </div>
+              <div class="payback"><div class="p-l">Окупаемость железа</div><div class="p-v" id="hPay">9 дней</div></div>
+            </div>
+          </div>
+          <div class="hwc mac">
+            <div class="hwc-head"><span class="hh-name">Mac Studio M3 Ultra</span><span class="hh-badge">Десктоп · Apple</span></div>
+            <div class="hwc-body">
+              <div class="hwc-spec">M3 Ultra · 32-ядерный CPU · 96 ГБ памяти · 819 ГБ/с · 32-ядерный Neural Engine</div>
+              <div class="hwc-price">599 990 ₽</div>
+              <div class="hwc-metrics">
+                <div class="hwc-metric"><span class="m-l">Систем в день</span><span class="m-v" style="color:var(--purple)" id="mDay">40</span></div>
+                <div class="hwc-metric"><span class="m-l">Систем в месяц</span><span class="m-v" style="color:var(--purple)" id="mMonth">880</span></div>
+                <div class="hwc-metric"><span class="m-l">Весь портфель за</span><span class="m-v" id="mAll">12,7 мес</span></div>
+                <div class="hwc-metric"><span class="m-l">Выручка / месяц</span><span class="m-v" style="color:var(--amber)" id="mRev">10,6 млн ₽</span></div>
+              </div>
+              <div class="payback"><div class="p-l">Окупаемость железа</div><div class="p-v" id="mPay">2 дня</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="verdict">
+        <div class="verdict-ic">⚖</div>
+        <div class="verdict-txt">
+          <h3>Оба варианта окупаются почти мгновенно</h3>
+          <p>При заданных допущениях HYPERPC обрабатывает портфель быстрее в <b id="vRatio">2,0×</b> и стоит <b id="vTimes">10,5×</b> дороже. На фоне выручки в 134,4 млн ₽ цена любого из них — доли процента: железо здесь не расход, а ускоритель. Выбор — между скоростью прохождения портфеля (HYPERPC) и минимальными вложениями на старте (Mac Studio).</p>
+        </div>
+      </div>
+      <div class="disclaimer">
+        <b>Источники цен (проверено 03.07.2026):</b> HYPERPC AMPERE 7R MAX — от 6 303 300 ₽ (hyperpc.ru), RTX PRO 6000 Blackwell / Threadripper PRO 7975WX / 512 ГБ ECC. Mac Studio M3 Ultra 96 ГБ / 1 ТБ — 599 990 ₽ (re-store.ru). <span class="warn">Скорость генерации — допущение</span>, а не измеренный факт: замените ползунками на реальные значения вашего пайплайна. Выручка портфеля — арифметика по ценам (ППР 2 000 ₽, ИД 10 000 ₽) и распределению систем.
+      </div>
+    </div>
+    <div class="signrow">
+      <div class="sign-cell"><div class="s-l">Портфель</div><div class="s-v">2000 домов</div></div>
+      <div class="sign-cell"><div class="s-l">Систем</div><div class="s-v">11 200</div></div>
+      <div class="sign-cell"><div class="s-l">Выручка</div><div class="s-v">134,4 млн ₽</div></div>
+      <div class="sign-cell"><div class="s-l">Лист</div><div class="s-v">1 / 1</div></div>
+    </div>
+  </div></div>
 </div>
-
-<!-- РАСПРЕДЕЛЕНИЕ -->
-<section>
-  <div class="sec-eyebrow">Структура портфеля</div>
-  <h2>2000 домов → <span class="grad">11 200 систем</span></h2>
-  <div class="sec-lead">Дома различаются по числу инженерных систем. И ППР, и ИД делаются на каждую систему — поэтому считаем от общего числа систем, а не домов.</div>
-  <div class="dist" id="dist"></div>
-</section>
-
-<!-- ВЫРУЧКА -->
-<section>
-  <div class="sec-eyebrow">Выручка</div>
-  <h2>Из чего складываются <span class="grad-a">134,4 млн ₽</span></h2>
-  <div class="sec-lead">Разово по всему портфелю из 2000 домов. ИД — основной драйвер: цена в 5 раз выше ППР.</div>
-  <div class="revbar" id="revbar"></div>
-  <div class="tiles">
-    <div class="tile c1"><div class="t-l">Всего систем</div><div class="t-v grad">11 200</div><div class="t-s">в среднем 5,6 на дом</div></div>
-    <div class="tile c2"><div class="t-l">Выручка ППР</div><div class="t-v grad-a">22,4 млн ₽</div><div class="t-s">11 200 × 2 000 ₽</div></div>
-    <div class="tile c3"><div class="t-l">Выручка ИД</div><div class="t-v grad-g">112 млн ₽</div><div class="t-s">11 200 × 10 000 ₽</div></div>
-    <div class="tile c4"><div class="t-l">В среднем с дома</div><div class="t-v grad-p">67,2 тыс ₽</div><div class="t-s">ППР + ИД по системам дома</div></div>
-  </div>
-</section>
-
-<!-- ЖЕЛЕЗО -->
-<section>
-  <div class="sec-eyebrow">Производственные мощности</div>
-  <h2>Какое <span class="grad">железо</span> это потянет</h2>
-  <div class="sec-lead">Скорость генерации зависит от вашего пайплайна (модель, длина документа). Задайте реальные значения ползунками — расчёт пересчитается. Значения по умолчанию — инженерная оценка, не факт.</div>
-  <div class="hw">
-    <div class="hw-controls">
-      <div class="ctl">
-        <div class="ctl-top"><div class="ctl-label">HYPERPC 7R MAX<span>минут на 1 систему (ППР+ИД)</span></div><div class="ctl-val"><span id="vH">6</span> <span class="u">мин</span></div></div>
-        <input type="range" id="slH" min="1" max="30" value="6">
-        <div class="ctl-ticks"><span>1</span><span>15</span><span>30</span></div>
-      </div>
-      <div class="ctl">
-        <div class="ctl-top"><div class="ctl-label">Mac Studio M3 Ultra<span>минут на 1 систему (ППР+ИД)</span></div><div class="ctl-val" style="color:var(--purple)"><span id="vM">12</span> <span class="u">мин</span></div></div>
-        <input type="range" id="slM" min="1" max="40" value="12">
-        <div class="ctl-ticks"><span>1</span><span>20</span><span>40</span></div>
-      </div>
-      <div class="ctl">
-        <div class="ctl-top"><div class="ctl-label">Рабочих часов в сутки<span>смена генерации</span></div><div class="ctl-val" style="color:var(--teal)"><span id="vHrs">8</span> <span class="u">ч</span></div></div>
-        <input type="range" id="slHrs" min="4" max="24" value="8">
-        <div class="ctl-ticks"><span>4</span><span>12</span><span>24</span></div>
-      </div>
-      <div class="assumption">⚠ Скорость — допущение. Реальную цифру знает ваш пайплайн: замерьте время генерации одного комплекта ППР+ИД и впишите ползунком.</div>
-    </div>
-
-    <div class="hw-cards">
-      <div class="hwc hyperpc">
-        <div class="hwc-badge">Сервер · GPU</div>
-        <div class="hwc-name">HYPERPC AMPERE 7R MAX</div>
-        <div class="hwc-spec">RTX PRO 6000 Blackwell · 96 ГБ VRAM · 24 064 CUDA · Threadripper PRO 7975WX · 512 ГБ ECC</div>
-        <div class="hwc-price">6 303 300 ₽</div>
-        <div class="hwc-metrics">
-          <div class="hwc-metric"><span class="m-l">Систем в день</span><span class="m-v grad-g" id="hDay">80</span></div>
-          <div class="hwc-metric"><span class="m-l">Систем в месяц</span><span class="m-v grad-g" id="hMonth">1 760</span></div>
-          <div class="hwc-metric"><span class="m-l">Весь портфель за</span><span class="m-v" id="hAll">6,4 мес</span></div>
-          <div class="hwc-metric"><span class="m-l">Выручка / месяц</span><span class="m-v grad-a" id="hRev">21,1 млн ₽</span></div>
-        </div>
-        <div class="payback"><div class="p-l">Окупаемость железа</div><div class="p-v" id="hPay">9 дней</div></div>
-      </div>
-
-      <div class="hwc mac">
-        <div class="hwc-badge">Десктоп · Apple</div>
-        <div class="hwc-name">Mac Studio M3 Ultra</div>
-        <div class="hwc-spec">M3 Ultra · 32-ядерный CPU · 96 ГБ памяти · 819 ГБ/с · 32-ядерный Neural Engine</div>
-        <div class="hwc-price">599 990 ₽</div>
-        <div class="hwc-metrics">
-          <div class="hwc-metric"><span class="m-l">Систем в день</span><span class="m-v grad-p" id="mDay">40</span></div>
-          <div class="hwc-metric"><span class="m-l">Систем в месяц</span><span class="m-v grad-p" id="mMonth">880</span></div>
-          <div class="hwc-metric"><span class="m-l">Весь портфель за</span><span class="m-v" id="mAll">12,7 мес</span></div>
-          <div class="hwc-metric"><span class="m-l">Выручка / месяц</span><span class="m-v grad-a" id="mRev">10,6 млн ₽</span></div>
-        </div>
-        <div class="payback"><div class="p-l">Окупаемость железа</div><div class="p-v" id="mPay">2 дня</div></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="verdict">
-    <div class="verdict-ic">⚖️</div>
-    <div class="verdict-txt">
-      <h3 id="vTitle">Оба варианта окупаются почти мгновенно</h3>
-      <p id="vBody">При заданных допущениях HYPERPC обрабатывает портфель быстрее в <b id="vRatio">2,0×</b> и стоит <b id="vTimes">10,5×</b> дороже. На фоне выручки в 134,4 млн ₽ цена любого из них — доли процента: железо здесь не расход, а ускоритель. Выбор — между скоростью прохождения портфеля (HYPERPC) и минимальными вложениями на старте (Mac Studio).</p>
-    </div>
-  </div>
-
-  <div class="note">
-    <b>Источники цен (проверено 03.07.2026):</b> HYPERPC AMPERE 7R MAX — от 6 303 300 ₽ (hyperpc.ru), конфигурация RTX PRO 6000 Blackwell / Threadripper PRO 7975WX / 512 ГБ ECC. Mac Studio M3 Ultra 96 ГБ / 1 ТБ — 599 990 ₽ (re-store.ru). <b>Скорость генерации — допущение</b>, а не измеренный факт: замените ползунками на реальные значения вашего пайплайна. Выручка портфеля — арифметика по вашим ценам (ППР 2 000 ₽, ИД 10 000 ₽) и распределению систем.
-  </div>
-</section>
-
 <script>
-// ── ДАННЫЕ ──
 const TOTAL_HOUSES=2000;
 const DIST=[
-  {share:.40, sys:2, color:'linear-gradient(90deg,#22d3ee,#3b82f6)'},
-  {share:.20, sys:8, color:'linear-gradient(90deg,#a78bfa,#3b82f6)'},
-  {share:.20, sys:4, color:'linear-gradient(90deg,#2dd4bf,#22d3ee)'},
-  {share:.10, sys:10, color:'linear-gradient(90deg,#fbbf24,#fb923c)'},
-  {share:.10, sys:14, color:'linear-gradient(90deg,#f87171,#fb923c)'},
+  {share:.40, sys:2, color:'#1f5fd6'},
+  {share:.20, sys:8, color:'#6b4fd6'},
+  {share:.20, sys:4, color:'#2f8f5b'},
+  {share:.10, sys:10, color:'#c17d17'},
+  {share:.10, sys:14, color:'#d5322f'},
 ];
 const PRICE_PPR=2000, PRICE_ID=10000, DAYS_PER_MONTH=22;
 const totalSystems=DIST.reduce((a,d)=>a+TOTAL_HOUSES*d.share*d.sys,0);
 const maxSystems=Math.max(...DIST.map(d=>TOTAL_HOUSES*d.share*d.sys));
-
 function fmt(n){return Math.round(n).toLocaleString('ru-RU');}
 function mln(n){return (n/1e6).toFixed(n>=1e7?0:1).replace('.',',')+' млн ₽';}
 function plurDay(n){const m10=n%10,m100=n%100;if(m10===1&&m100!==11)return 'день';if(m10>=2&&m10<=4&&(m100<10||m100>=20))return 'дня';return 'дней';}
 function plurMonth(n){return n.toFixed(1).replace('.',',')+' мес';}
-
-// ── РАСПРЕДЕЛЕНИЕ ──
 const distEl=document.getElementById('dist');
 DIST.forEach(d=>{
   const houses=TOTAL_HOUSES*d.share, systems=houses*d.sys;
   const w=Math.max(14, systems/maxSystems*100);
   const row=document.createElement('div'); row.className='dist-row';
-  row.innerHTML=`
-    <div class="dist-label">${Math.round(d.share*100)}% домов<span>${fmt(houses)} домов · ${d.sys} сист/дом</span></div>
-    <div class="dist-track"><div class="dist-fill" style="width:0%;background:${d.color}">${d.sys} систем</div></div>
-    <div class="dist-val"><b>${fmt(systems)}</b>систем</div>`;
+  row.innerHTML='<div class="dist-label">'+Math.round(d.share*100)+'% домов<span>'+fmt(houses)+' домов · '+d.sys+' сист/дом</span></div>'+
+    '<div class="dist-track"><div class="dist-fill" style="width:0%;background:'+d.color+'">'+d.sys+' систем</div></div>'+
+    '<div class="dist-val"><b>'+fmt(systems)+'</b>систем</div>';
   distEl.appendChild(row);
-  requestAnimationFrame(()=>{ setTimeout(()=>{ row.querySelector('.dist-fill').style.width=w+'%'; },60); });
+  requestAnimationFrame(function(){ setTimeout(function(){ row.querySelector('.dist-fill').style.width=w+'%'; },60); });
 });
-
-// ── ВЫРУЧКА БАР ──
 const revPPR=totalSystems*PRICE_PPR, revID=totalSystems*PRICE_ID, revTotal=revPPR+revID;
-const revbar=document.getElementById('revbar');
-revbar.innerHTML=`
-  <div class="revbar-seg" style="flex:${revPPR};background:linear-gradient(135deg,#fbbf24,#fb923c)"><div class="rs-l">ППР · 22 400 000 ₽</div><div class="rs-v">${Math.round(revPPR/revTotal*100)}%</div></div>
-  <div class="revbar-seg" style="flex:${revID};background:linear-gradient(135deg,#34d399,#2dd4bf)"><div class="rs-l">ИД · 112 000 000 ₽</div><div class="rs-v">${Math.round(revID/revTotal*100)}%</div></div>`;
-
-// ── КАЛЬКУЛЯТОР ЖЕЛЕЗА ──
-const HW={
-  h:{price:6303300, min:'slH', valEl:'vH', day:'hDay', month:'hMonth', all:'hAll', rev:'hRev', pay:'hPay'},
-  m:{price:599990,  min:'slM', valEl:'vM', day:'mDay', month:'mMonth', all:'mAll', rev:'mRev', pay:'mPay'},
-};
-function calcHW(cfg, minutes, hours){
-  const perHour=60/minutes;
-  const perDay=perHour*hours;
-  const perMonth=perDay*DAYS_PER_MONTH;
-  const monthsAll=totalSystems/perMonth;
-  const revMonth=perMonth*(PRICE_PPR+PRICE_ID);
+document.getElementById('revbar').innerHTML='<div class="revbar-seg" style="flex:'+revPPR+';background:#c17d17"><div class="rs-l">ППР · 22 400 000 ₽</div><div class="rs-v">'+Math.round(revPPR/revTotal*100)+'%</div></div>'+
+  '<div class="revbar-seg" style="flex:'+revID+';background:#2f8f5b"><div class="rs-l">ИД · 112 000 000 ₽</div><div class="rs-v">'+Math.round(revID/revTotal*100)+'%</div></div>';
+const HW={h:{price:6303300,day:'hDay',month:'hMonth',all:'hAll',rev:'hRev',pay:'hPay'},m:{price:599990,day:'mDay',month:'mMonth',all:'mAll',rev:'mRev',pay:'mPay'}};
+function calcHW(cfg,minutes,hours){
+  const perHour=60/minutes, perDay=perHour*hours, perMonth=perDay*DAYS_PER_MONTH;
+  const monthsAll=totalSystems/perMonth, revMonth=perMonth*(PRICE_PPR+PRICE_ID);
   const paybackDays=cfg.price/revMonth*30;
   document.getElementById(cfg.day).textContent=fmt(perDay);
   document.getElementById(cfg.month).textContent=fmt(perMonth);
   document.getElementById(cfg.all).textContent=plurMonth(monthsAll);
   document.getElementById(cfg.rev).textContent=mln(revMonth);
   document.getElementById(cfg.pay).textContent=(paybackDays<1?'<1':Math.round(paybackDays))+' '+plurDay(Math.round(paybackDays));
-  return {perDay, monthsAll, revMonth, paybackDays};
+  return {perDay:perDay};
 }
 function recalc(){
-  const mH=+document.getElementById('slH').value;
-  const mM=+document.getElementById('slM').value;
-  const hrs=+document.getElementById('slHrs').value;
+  const mH=+document.getElementById('slH').value, mM=+document.getElementById('slM').value, hrs=+document.getElementById('slHrs').value;
   document.getElementById('vH').textContent=mH;
   document.getElementById('vM').textContent=mM;
   document.getElementById('vHrs').textContent=hrs;
-  const rH=calcHW(HW.h, mH, hrs);
-  const rM=calcHW(HW.m, mM, hrs);
-  // вердикт
-  const ratio=(rH.perDay/rM.perDay);
-  const times=(HW.h.price/HW.m.price);
-  document.getElementById('vRatio').textContent=ratio.toFixed(1).replace('.',',')+'×';
-  document.getElementById('vTimes').textContent=times.toFixed(1).replace('.',',')+'×';
+  const rH=calcHW(HW.h,mH,hrs), rM=calcHW(HW.m,mM,hrs);
+  document.getElementById('vRatio').textContent=(rH.perDay/rM.perDay).toFixed(1).replace('.',',')+'×';
+  document.getElementById('vTimes').textContent=(HW.h.price/HW.m.price).toFixed(1).replace('.',',')+'×';
 }
-['slH','slM','slHrs'].forEach(id=>document.getElementById(id).addEventListener('input',recalc));
+['slH','slM','slHrs'].forEach(function(id){document.getElementById(id).addEventListener('input',recalc);});
 recalc();
 </script>
 </body>
