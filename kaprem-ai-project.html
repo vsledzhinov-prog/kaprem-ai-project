@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КапРем · AI-генератор проектной документации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Spline+Sans+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{
+  /* чертёжная светлая палитра: калька, графит, синяя линия-разметка, красный штамп */
+  --paper:#f4f2ec;        /* калька / ватман */
+  --paper2:#fbfaf6;
+  --ink:#1c2530;          /* графит */
+  --ink2:#54606e;
+  --ink3:#8b95a1;
+  --line:#c9cdc3;         /* тонкая линия сетки */
+  --line2:#a8ada2;
+  --blue:#1f5fd6;         /* линия разметки / чертёжный синий */
+  --blue-soft:#e4ecfb;
+  --red:#d5322f;          /* красный штамп / выноска */
+  --red-soft:#fbe6e5;
+  --amber:#c17d17;
+  --green:#2f8f5b;
+  --green-soft:#e0f0e7;
+}
+html,body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5}
+body{position:relative;overflow-x:hidden}
+/* миллиметровка на фоне */
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line) .5px,transparent .5px),linear-gradient(90deg,var(--line) .5px,transparent .5px),
+    linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);
+  background-size:8px 8px,8px 8px,80px 80px,80px 80px}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:0 24px 90px}
+
+/* рамка чертежа */
+.frame{border:2px solid var(--ink);margin-top:26px;background:var(--paper2);
+  box-shadow:0 1px 0 var(--ink),8px 8px 0 rgba(28,37,48,.06)}
+.frame-inner{border:1px solid var(--line2);margin:7px}
+
+/* штамп-шапка */
+.titleblock{display:grid;grid-template-columns:1fr auto;border-bottom:1.5px solid var(--ink)}
+.tb-left{padding:22px 26px}
+.tb-eyebrow{font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:9px}
+.tb-eyebrow::before{content:"";width:22px;height:2px;background:var(--blue)}
+h1{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(26px,4.4vw,44px);line-height:1.02;letter-spacing:-.015em;margin:12px 0 10px;max-width:16ch}
+h1 .u{color:var(--blue);position:relative}
+h1 .u::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:6px;background:var(--blue-soft);z-index:-1}
+.tb-sub{font-size:15px;color:var(--ink2);max-width:52ch}
+.tb-right{border-left:1.5px solid var(--ink);display:grid;grid-template-rows:repeat(3,1fr);min-width:190px}
+.tb-cell{padding:11px 16px;border-bottom:1px solid var(--line2);font-family:'Spline Sans Mono',monospace}
+.tb-cell:last-child{border-bottom:none}
+.tb-cell .c-l{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink3)}
+.tb-cell .c-v{font-size:14px;font-weight:700;color:var(--ink);margin-top:3px}
+
+/* лента процесса вход→движок→выход */
+.pipeline{padding:34px 26px;border-bottom:1.5px solid var(--ink)}
+.pl-label{font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:20px;text-align:center}
+.pl-flow{display:grid;grid-template-columns:1fr auto 1.1fr auto 1.2fr;gap:0;align-items:stretch}
+@media(max-width:920px){.pl-flow{grid-template-columns:1fr;gap:14px}.pl-arrow{transform:rotate(90deg);justify-self:center;padding:4px 0}}
+.pl-col{display:flex;flex-direction:column}
+.pl-head{font-family:'Archivo',sans-serif;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.04em;padding:9px 12px;color:#fff;display:flex;align-items:center;gap:8px}
+.pl-head .n{font-family:'Spline Sans Mono',monospace;font-size:11px;opacity:.85}
+.pl-in .pl-head{background:var(--ink2)}
+.pl-eng .pl-head{background:var(--blue)}
+.pl-out .pl-head{background:var(--red)}
+.pl-body{border:1.5px solid var(--ink);border-top:none;padding:12px;flex:1;background:var(--paper2)}
+.pl-item{font-family:'Spline Sans Mono',monospace;font-size:12px;padding:8px 10px;margin-bottom:7px;background:#fff;border:1px solid var(--line2);display:flex;align-items:center;gap:9px}
+.pl-item:last-child{margin-bottom:0}
+.pl-item .doc{width:16px;height:20px;flex-shrink:0;position:relative;border:1.4px solid var(--ink2);border-radius:1px;background:#fff}
+.pl-item .doc::before{content:"";position:absolute;top:0;right:0;border-width:0 5px 5px 0;border-style:solid;border-color:transparent var(--paper) transparent transparent}
+.pl-item .doc.b{border-color:var(--blue)}.pl-item .doc.r{border-color:var(--red)}.pl-item .doc.g{border-color:var(--green)}
+.pl-arrow{display:flex;align-items:center;justify-content:center;padding:0 14px;color:var(--ink)}
+.pl-arrow svg{width:34px;height:34px}
+/* движок */
+.pl-eng .pl-body{background:var(--blue-soft);border-color:var(--blue);position:relative}
+.eng-core{text-align:center;padding:8px 4px}
+.eng-core .ec-ic{font-size:30px;line-height:1}
+.eng-core .ec-t{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;margin-top:8px;color:var(--blue)}
+.eng-core .ec-s{font-size:11px;color:var(--ink2);margin-top:5px;font-family:'Spline Sans Mono',monospace}
+.eng-steps{margin-top:12px;border-top:1px dashed var(--blue);padding-top:10px}
+.eng-step{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink2);padding:4px 0;display:flex;gap:8px;align-items:baseline}
+.eng-step .es-n{color:var(--blue);font-weight:700}
+
+/* раздел ПД — реестр 12 разделов */
+.section{padding:34px 26px;border-bottom:1.5px solid var(--ink)}
+.section:last-child{border-bottom:none}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+h2{font-family:'Archivo',sans-serif;font-weight:800;font-size:clamp(18px,2.4vw,24px)}
+.sec-tag{font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;color:var(--red);border:1px solid var(--red);padding:3px 9px;border-radius:2px;text-transform:uppercase}
+.sec-lead{font-size:13px;color:var(--ink2);max-width:70ch;margin-bottom:20px}
+.regnote{font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink3)}
+
+.reg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:820px){.reg{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.reg{grid-template-columns:1fr}}
+.reg-item{border:1.4px solid var(--ink);background:var(--paper2);padding:12px 13px;display:flex;gap:11px;align-items:flex-start;position:relative;transition:transform .12s,box-shadow .12s}
+.reg-item:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+.reg-num{font-family:'Spline Sans Mono',monospace;font-weight:700;font-size:13px;color:#fff;background:var(--ink);width:26px;height:26px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-radius:1px}
+.reg-item.opt .reg-num{background:var(--ink3)}
+.reg-b .reg-code{font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:600;color:var(--blue);letter-spacing:.04em}
+.reg-b .reg-name{font-weight:600;font-size:13px;margin-top:2px;line-height:1.35}
+.reg-b .reg-opt{font-family:'Spline Sans Mono',monospace;font-size:9px;color:var(--ink3);margin-top:4px;text-transform:uppercase}
+
+/* выход: три пакета */
+.packs{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:820px){.packs{grid-template-columns:1fr}}
+.pack{border:1.5px solid var(--ink);background:var(--paper2)}
+.pack-head{padding:12px 15px;color:#fff;font-family:'Archivo',sans-serif;font-weight:800;font-size:14px;text-transform:uppercase;letter-spacing:.03em;display:flex;justify-content:space-between;align-items:center}
+.pack.pd .pack-head{background:var(--blue)}
+.pack.rd .pack-head{background:var(--green)}
+.pack.est .pack-head{background:var(--amber)}
+.pack-head .ph-n{font-family:'Spline Sans Mono',monospace;font-size:11px;opacity:.85}
+.pack-body{padding:14px 15px}
+.pack-row{font-family:'Spline Sans Mono',monospace;font-size:12px;color:var(--ink2);padding:6px 0;border-bottom:1px dotted var(--line2);display:flex;gap:8px;align-items:baseline}
+.pack-row:last-child{border-bottom:none}
+.pack-row::before{content:"▸";color:var(--blue);font-size:10px}
+.pack.rd .pack-row::before{color:var(--green)}
+.pack.est .pack-row::before{color:var(--amber)}
+
+/* эффект / выноски */
+.callouts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px}
+@media(max-width:820px){.callouts{grid-template-columns:1fr 1fr}}
+.callout{border:1.4px solid var(--ink);padding:16px 14px;background:var(--paper2);position:relative}
+.callout::before{content:attr(data-n);position:absolute;top:-11px;left:12px;background:var(--red);color:#fff;font-family:'Spline Sans Mono',monospace;font-size:10px;font-weight:700;padding:2px 7px;border-radius:1px}
+.callout .co-v{font-family:'Archivo',sans-serif;font-weight:900;font-size:26px;color:var(--ink);line-height:1}
+.callout .co-l{font-size:12px;color:var(--ink2);margin-top:7px;line-height:1.4}
+
+.disclaimer{margin-top:22px;border:1.4px dashed var(--line2);background:var(--paper2);padding:15px 17px;font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink2);line-height:1.7}
+.disclaimer b{color:var(--ink)}
+.disclaimer .warn{color:var(--red);font-weight:700}
+
+/* низ-подпись как в штампе */
+.signrow{display:grid;grid-template-columns:repeat(4,1fr);border-top:1.5px solid var(--ink)}
+.sign-cell{padding:12px 15px;border-right:1px solid var(--line2);font-family:'Spline Sans Mono',monospace}
+.sign-cell:last-child{border-right:none}
+.sign-cell .s-l{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3)}
+.sign-cell .s-v{font-size:13px;font-weight:700;margin-top:4px}
+@media(max-width:620px){.signrow{grid-template-columns:1fr 1fr}.sign-cell:nth-child(2){border-right:none}}
+
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="frame"><div class="frame-inner">
+
+    <!-- ШТАМП -->
+    <div class="titleblock">
+      <div class="tb-left">
+        <div class="tb-eyebrow">КапРем · концепт · Буран</div>
+        <h1>AI-генератор <span class="u">проектной документации</span></h1>
+        <div class="tb-sub">Загружаете ИРД, инженерные изыскания и техническое задание — на выходе получаете готовый комплект: проектную документацию по 87-ПП, рабочую документацию и сметы.</div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-cell"><div class="c-l">Стадия</div><div class="c-v">ПД + РД + СМ</div></div>
+        <div class="tb-cell"><div class="c-l">Основание</div><div class="c-v">ПП РФ №87</div></div>
+        <div class="tb-cell"><div class="c-l">Статус</div><div class="c-v" style="color:var(--red)">Концепт</div></div>
+      </div>
+    </div>
+
+    <!-- ЛЕНТА ПРОЦЕССА -->
+    <div class="pipeline">
+      <div class="pl-label">Один поток данных · от исходных до готового проекта</div>
+      <div class="pl-flow">
+
+        <!-- ВХОД -->
+        <div class="pl-col pl-in">
+          <div class="pl-head"><span class="n">01</span> Вход · исходные</div>
+          <div class="pl-body">
+            <div class="pl-item"><span class="doc"></span> ИРД · ГПЗУ, ТУ, задание</div>
+            <div class="pl-item"><span class="doc"></span> Изыскания · ИГИ, ИГДИ, ИЭИ</div>
+            <div class="pl-item"><span class="doc"></span> Техническое задание</div>
+            <div class="pl-item"><span class="doc"></span> Обмеры, дефектные ведомости</div>
+          </div>
+        </div>
+
+        <div class="pl-arrow"><svg viewBox="0 0 40 40" fill="none"><path d="M6 20h26M24 12l9 8-9 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <!-- ДВИЖОК -->
+        <div class="pl-col pl-eng">
+          <div class="pl-head"><span class="n">02</span> AI-движок</div>
+          <div class="pl-body">
+            <div class="eng-core">
+              <div class="ec-ic">⚙️</div>
+              <div class="ec-t">Проектный агент</div>
+              <div class="ec-s">нормы · шаблоны · расчёты</div>
+            </div>
+            <div class="eng-steps">
+              <div class="eng-step"><span class="es-n">a</span> Разбор исходных, извлечение параметров</div>
+              <div class="eng-step"><span class="es-n">b</span> Подбор решений по СП/ГОСТ/87-ПП</div>
+              <div class="eng-step"><span class="es-n">c</span> Расчёты и формирование разделов</div>
+              <div class="eng-step"><span class="es-n">d</span> Нормоконтроль и сборка комплекта</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pl-arrow"><svg viewBox="0 0 40 40" fill="none"><path d="M6 20h26M24 12l9 8-9 8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+        <!-- ВЫХОД -->
+        <div class="pl-col pl-out">
+          <div class="pl-head"><span class="n">03</span> Выход · проект</div>
+          <div class="pl-body">
+            <div class="pl-item"><span class="doc b"></span> ПД · 12 разделов по 87-ПП</div>
+            <div class="pl-item"><span class="doc g"></span> РД · чертежи, спецификации</div>
+            <div class="pl-item"><span class="doc r"></span> Сметы · ЛСР, ОСР, ВОР</div>
+            <div class="pl-item"><span class="doc"></span> Комплект к экспертизе</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ПД: 12 РАЗДЕЛОВ -->
+    <div class="section">
+      <div class="sec-head">
+        <h2>Проектная документация · 12 разделов</h2>
+        <div class="sec-tag">87-ПП ред. 21.10.2025</div>
+      </div>
+      <div class="sec-lead">Полный состав ПД для объектов капстроительства непроизводственного назначения. При капитальном ремонте формируются только разделы в объёме затрагиваемых работ (упрощённый состав).</div>
+      <div class="reg" id="reg"></div>
+    </div>
+
+    <!-- ВЫХОДНОЙ ПАКЕТ -->
+    <div class="section">
+      <div class="sec-head"><h2>Что на выходе · полный пакет</h2></div>
+      <div class="sec-lead">Три взаимосвязанных комплекта из одного набора исходных данных. РД детализирует решения ПД, сметы считаются из тех же объёмов.</div>
+      <div class="packs">
+        <div class="pack pd">
+          <div class="pack-head">Проектная · ПД <span class="ph-n">87-ПП</span></div>
+          <div class="pack-body">
+            <div class="pack-row">Текстовая часть по разделам</div>
+            <div class="pack-row">Графическая часть, схемы</div>
+            <div class="pack-row">Обоснования, расчёты</div>
+            <div class="pack-row">Готовность к экспертизе</div>
+          </div>
+        </div>
+        <div class="pack rd">
+          <div class="pack-head">Рабочая · РД <span class="ph-n">СПДС</span></div>
+          <div class="pack-body">
+            <div class="pack-row">Рабочие чертежи по маркам</div>
+            <div class="pack-row">Спецификации оборудования</div>
+            <div class="pack-row">Узлы, детали, ведомости</div>
+            <div class="pack-row">Кабельные/трубные журналы</div>
+          </div>
+        </div>
+        <div class="pack est">
+          <div class="pack-head">Сметная · СМ <span class="ph-n">ФСНБ</span></div>
+          <div class="pack-body">
+            <div class="pack-row">Локальные сметы (ЛСР)</div>
+            <div class="pack-row">Объектные сметы (ОСР)</div>
+            <div class="pack-row">Ведомости объёмов (ВОР)</div>
+            <div class="pack-row">Сводный сметный расчёт</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ЭФФЕКТ -->
+    <div class="section">
+      <div class="sec-head"><h2>Зачем · эффект концепта</h2></div>
+      <div class="callouts">
+        <div class="callout" data-n="01"><div class="co-v">Один ввод</div><div class="co-l">исходные заносятся один раз — дальше проект собирается сам</div></div>
+        <div class="callout" data-n="02"><div class="co-v">Связность</div><div class="co-l">ПД, РД и сметы согласованы между собой по построению</div></div>
+        <div class="callout" data-n="03"><div class="co-v">Норм-база</div><div class="co-l">решения опираются на актуальные СП, ГОСТ и 87-ПП</div></div>
+        <div class="callout" data-n="04"><div class="co-v">Скорость</div><div class="co-l">черновой комплект — за часы вместо недель ручной работы</div></div>
+      </div>
+
+      <div class="disclaimer">
+        <span class="warn">⚠ Это концепт, а не готовый продукт.</span> AI-генератор ускоряет и структурирует подготовку, но <b>проект подписывает и несёт ответственность ГИП / проектировщик</b>: выходной комплект проходит проверку человеком, нормоконтроль и экспертизу (ст. 49 ГрК РФ). Состав разделов ПД приведён по <b>ПП РФ №87 в ред. от 21.10.2025</b>; для капремонта состав упрощённый — в объёме затрагиваемых работ.
+      </div>
+    </div>
+
+    <!-- ШТАМП-ПОДПИСЬ -->
+    <div class="signrow">
+      <div class="sign-cell"><div class="s-l">Разработал</div><div class="s-v">КапРем · AI</div></div>
+      <div class="sign-cell"><div class="s-l">Проверил</div><div class="s-v">ГИП (человек)</div></div>
+      <div class="sign-cell"><div class="s-l">Стадия</div><div class="s-v">ПД · РД · СМ</div></div>
+      <div class="sign-cell"><div class="s-l">Лист</div><div class="s-v">1 / 1</div></div>
+    </div>
+
+  </div></div>
+</div>
+
+<script>
+// 12 разделов ПД по 87-ПП (ОКС непроизводственного назначения)
+const SECTIONS=[
+  {n:1, code:'Раздел 1', name:'Пояснительная записка'},
+  {n:2, code:'Раздел 2', name:'Схема планировочной организации земельного участка', opt:'при необходимости'},
+  {n:3, code:'Раздел 3', name:'Архитектурные решения'},
+  {n:4, code:'Раздел 4', name:'Конструктивные и объёмно-планировочные решения'},
+  {n:5, code:'Раздел 5', name:'Сведения об инженерном оборудовании и сетях', opt:'подразделы ЭОМ, ВК, ОВ, СС, ГС, ТХ'},
+  {n:6, code:'Раздел 6', name:'Проект организации строительства (ПОС)'},
+  {n:7, code:'Раздел 7', name:'Проект организации работ по сносу или демонтажу', opt:'при необходимости'},
+  {n:8, code:'Раздел 8', name:'Мероприятия по охране окружающей среды', opt:'при необходимости'},
+  {n:9, code:'Раздел 9', name:'Мероприятия по обеспечению пожарной безопасности', opt:'при необходимости'},
+  {n:10, code:'Раздел 10', name:'Мероприятия по обеспечению доступа инвалидов', opt:'при необходимости'},
+  {n:11, code:'Раздел 11', name:'Смета на строительство'},
+  {n:12, code:'Раздел 12', name:'Иная документация в случаях по 87-ПП'},
+];
+const reg=document.getElementById('reg');
+SECTIONS.forEach(s=>{
+  const div=document.createElement('div');
+  div.className='reg-item'+(s.opt&&s.opt.startsWith('при')?' opt':'');
+  div.innerHTML=`
+    <div class="reg-num">${s.n}</div>
+    <div class="reg-b">
+      <div class="reg-code">${s.code}</div>
+      <div class="reg-name">${s.name}</div>
+      ${s.opt?`<div class="reg-opt">${s.opt}</div>`:''}
+    </div>`;
+  reg.appendChild(div);
+});
+</script>
+</body>
+</html>

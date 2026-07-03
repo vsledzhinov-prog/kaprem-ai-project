@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>КапРем · Визуализации</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=Spline+Sans+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-font-smoothing:antialiased}
+:root{--paper:#f4f2ec;--paper2:#fbfaf6;--ink:#1c2530;--ink2:#54606e;--ink3:#8b95a1;--line:#c9cdc3;--line2:#a8ada2;--blue:#1f5fd6;--amber:#c17d17}
+html,body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;background-image:linear-gradient(var(--line) .5px,transparent .5px),linear-gradient(90deg,var(--line) .5px,transparent .5px),linear-gradient(var(--line2) 1px,transparent 1px),linear-gradient(90deg,var(--line2) 1px,transparent 1px);background-size:8px 8px,8px 8px,80px 80px,80px 80px}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 24px 80px}
+.frame{border:2px solid var(--ink);margin-top:34px;background:var(--paper2);box-shadow:8px 8px 0 rgba(28,37,48,.06)}
+.frame-inner{border:1px solid var(--line2);margin:7px}
+.head{padding:34px 30px;border-bottom:1.5px solid var(--ink)}
+.eyebrow{font-family:'Spline Sans Mono',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);display:flex;align-items:center;gap:9px}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--blue)}
+h1{font-family:'Archivo',sans-serif;font-weight:900;font-size:clamp(26px,5vw,42px);line-height:1.02;letter-spacing:-.015em;margin:14px 0 10px}
+.sub{font-size:15px;color:var(--ink2);max-width:56ch}
+.grid{padding:24px 30px 30px;display:grid;gap:16px}
+.card{border:1.5px solid var(--ink);background:var(--paper2);text-decoration:none;color:inherit;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;padding:20px 22px;transition:transform .12s,box-shadow .12s}
+.card:hover{transform:translate(-3px,-3px);box-shadow:5px 5px 0 var(--ink)}
+.card-n{font-family:'Spline Sans Mono',monospace;font-weight:700;font-size:15px;color:#fff;width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card.c1 .card-n{background:var(--amber)}.card.c2 .card-n{background:var(--blue)}
+.card-b .card-t{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px}
+.card-b .card-s{font-size:13px;color:var(--ink2);margin-top:4px}
+.card-b .card-tag{font-family:'Spline Sans Mono',monospace;font-size:10px;color:var(--ink3);margin-top:8px;text-transform:uppercase;letter-spacing:.06em}
+.card-go{font-family:'Spline Sans Mono',monospace;font-size:12px;font-weight:700;color:var(--blue);display:flex;align-items:center;gap:6px;white-space:nowrap}
+.card-go svg{width:18px;height:18px}
+.foot{padding:16px 30px;border-top:1.5px solid var(--ink);font-family:'Spline Sans Mono',monospace;font-size:11px;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media(max-width:640px){.card{grid-template-columns:auto 1fr;gap:14px}.card-go{grid-column:2}}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="frame"><div class="frame-inner">
+    <div class="head">
+      <div class="eyebrow">КапРем · визуализации</div>
+      <h1>Концепт-визуализации КапРем</h1>
+      <div class="sub">Экономика автоматизации и AI-генератор проектной документации. Выберите материал для просмотра.</div>
+    </div>
+    <div class="grid">
+      <a class="card c1" href="./kaprem-economics.html">
+        <div class="card-n">01</div>
+        <div class="card-b">
+          <div class="card-t">Экономика ИД и ППР</div>
+          <div class="card-s">Расчёт выручки на автоматизации ИД/ППР по портфелю 2000 домов и подбор железа.</div>
+          <div class="card-tag">интерактив · калькулятор · 134,4 млн ₽</div>
+        </div>
+        <div class="card-go">Открыть <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </a>
+      <a class="card c2" href="./kaprem-ai-project.html">
+        <div class="card-n">02</div>
+        <div class="card-b">
+          <div class="card-t">AI-генератор ПСД</div>
+          <div class="card-s">Концепт: ИРД, изыскания, ТЗ на входе → проект (ПД + РД + сметы) на выходе.</div>
+          <div class="card-tag">концепт · 87-ПП · чертёжная схема</div>
+        </div>
+        <div class="card-go">Открыть <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </a>
+    </div>
+    <div class="foot"><span>КапРем · vsledzhinov-prog</span><span>ПД по 87-ПП ред. 21.10.2025</span></div>
+  </div></div>
+</div>
+</body>
+</html>
